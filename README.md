@@ -1,2 +1,2 @@
 # PST3
-Random PS3 Web Tool For Misc Activities
+PS3 Web Landing psge For Misc Activities compatible with ps3 browser.
