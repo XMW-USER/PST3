@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PlayStation Tools</title>
     <link rel="icon" href="rescources/images/icon.ico" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="rescources/css/styles.css"> <!-- Link to external CSS file -->
+    <link rel="stylesheet" type="text/css" href="rescources/css/styles.css">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -16,7 +16,7 @@
             padding: 0;
         }
         h1 {
-            color: #fff; /* Changed title text color to white */
+            color: #fff;
             margin-bottom: 20px;
             text-align: center;
         }
@@ -82,52 +82,69 @@
     </div>
 
     <script>
-        // Function to retrieve system firmware version from WebMAN's API
-        function getConsoleInfo() {
-    // Check if the user is using a PS3 browser
-    if (navigator.userAgent.indexOf("PLAYSTATION 3") === -1) {
-        document.getElementById("console-info").style.display = "none";
-        document.getElementById("compatibility-message").style.display = "block";
-        return;
-    }
-
-    // Make an AJAX request to WebMAN's API
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                // Parse the JSON response
-                var response = JSON.parse(xhr.responseText);
-                // Extract and display the console information
-                var firmwareVersion = response.firmwareVersion || "N/A";
-                var model = response.model || "N/A";
-                var systemId = response.systemId || "N/A";
-                var temperature = response.temperature || "N/A";
-
-                // Display the console information
-                var infoText = "Firmware Version: " + firmwareVersion + "<br>" +
-                               "Model: " + model + "<br>" +
-                               "System ID: " + systemId + "<br>" +
-                               "Temperature: " + temperature;
-                document.getElementById("console-info").innerHTML = infoText;
-            } else {
-                console.error("Error retrieving console information: " + xhr.status);
-                document.getElementById("console-info").textContent = "Failed to retrieve console information.";
-            }
+        function getLocalIP(callback) {
+            var pc = new RTCPeerConnection({iceServers:[]});
+            pc.createDataChannel('');
+            pc.createOffer(pc.setLocalDescription.bind(pc), function() {});
+            pc.onicecandidate = function(event) {
+                if (!event || !event.candidate) return;
+                var ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3})/;
+                var ipAddress = ipRegex.exec(event.candidate.candidate)[1];
+                callback(ipAddress);
+                pc.onicecandidate = null;
+                pc.close();
+            };
         }
-    };
 
-    xhr.onerror = function() {
-        console.error("An error occurred during the request.");
-        document.getElementById("console-info").textContent = "Failed to retrieve console information.";
-    };
+        function getConsoleInfo() {
+            // Check if the user is using a PS3 browser
+            if (navigator.userAgent.indexOf("PLAYSTATION 3") === -1) {
+                document.getElementById("console-info").style.display = "none";
+                document.getElementById("compatibility-message").style.display = "block";
+                return;
+            }
 
-    xhr.open("GET", "http://<?php echo $_SERVER['SERVER_ADDR']; ?>/webman/info.json", true);
-    xhr.send();
-}
+            getLocalIP(function(ip) {
+                // Make an AJAX request to WebMAN's API
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            try {
+                                // Parse the JSON response
+                                var response = JSON.parse(xhr.responseText);
+                                // Extract and display the console information
+                                var firmwareVersion = response.firmwareVersion || "N/A";
+                                var model = response.model || "N/A";
+                                var systemId = response.systemId || "N/A";
+                                var temperature = response.temperature || "N/A";
 
-// Call the function to retrieve and display the console information
-getConsoleInfo();
+                                // Display the console information
+                                var infoText = "Firmware Version: " + firmwareVersion + "<br>" +
+                                               "Model: " + model + "<br>" +
+                                               "System ID: " + systemId + "<br>" +
+                                               "Temperature: " + temperature;
+                                document.getElementById("console-info").innerHTML = infoText;
+                            } catch (e) {
+                                document.getElementById("console-info").textContent = "Failed to parse console information.";
+                            }
+                        } else {
+                            document.getElementById("console-info").textContent = "Failed to retrieve console information: " + xhr.status;
+                        }
+                    }
+                };
+
+                xhr.onerror = function() {
+                    document.getElementById("console-info").textContent = "An error occurred during the request.";
+                };
+
+                xhr.open("GET", "http://" + ip + "/webman/info.json", true);
+                xhr.send();
+            });
+        }
+
+        // Call the function to retrieve and display the console information
+        getConsoleInfo();
     </script>
 </body>
 </html>
