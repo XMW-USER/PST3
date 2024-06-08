@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID List</title>
+    <link rel="icon" href="../images/icon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('../images/background.jpg');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .container {
+            margin-top: 10%;
+            text-align: center;
+        }
+        .link-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+        .link-button:hover {
+            background-color: #0056b3;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 60%;
+            height: 40px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            resize: none;
+            overflow: hidden;
+            background-color: #f5f5f5;
+            margin-bottom: 10px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .copyright {
+            color: #fff;
+            text-align: center;
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ID List</h1>
+        <select id="id-selector" class="link-button" onchange="showIDInfo()">
+            <option value="">Select ID</option>
+            <option value="id-1">ID-1</option>
+            <option value="id-2">ID-2</option>
+            <option value="id-3">ID-3</option>
+            <option value="id-4">ID-4</option>
+            <option value="id-5">ID-5</option>
+            <option value="id-6">ID-6</option>
+            <option value="id-7">ID-7</option>
+            <option value="id-8">ID-8</option>
+            <option value="id-9">ID-9</option>
+            <option value="id-10">ID-10</option>
+        </select>
+        <br>
+        <textarea id="idps-info" readonly placeholder="IDPS information will be displayed here..."></textarea>
+        <textarea id="psid-info" readonly placeholder="PSID information will be displayed here..."></textarea>
+        <br>
+        <div id="download-link-container"></div>
+        <br>
+        <a href="../misc/downloads/homebrew/psnpatch.pkg" download class="link-button">Download PSNPatch.pkg</a>
+        <br>
+        <a href="../../index.html" class="link-button">Back to Home</a>
+    </div>
+    <div class="copyright">
+        <p>Developed by XMW-USER &copy; 2024</p>
+    </div>
+
+    <script>
+        function showIDInfo() {
+            var selector = document.getElementById("id-selector");
+            var idpsInfo = document.getElementById("idps-info");
+            var psidInfo = document.getElementById("psid-info");
+            var selectedID = selector.value;
+
+            var ids = {
+                "id-1": { idps: "00000001008400091005ABE1D098560C", psid: "00120730BC205C985A29F79E3C2720BF" },
+                "id-2": { idps: "000000010085000B14DA67DC95B9D3D3", psid: "20050722795341B8162091F12040BA5C" },
+                "id-3": { idps: "000000010085000E100B18452619E693", psid: "AA8F870801455E6E8A1E1E51B036CD7F" },
+                "id-4": { idps: "000000010085000E14035611F522800D", psid: "99C2DD5E2D40B3644B52402CD68EA2E5" },
+                "id-5": { idps: "0000000100850009101B9CFD04B19ED3", psid: "560D0BC305758D208CA6923630B263AA" },
+                "id-6": { idps: "0000000100850009101B71657D0FC448", psid: "B9854366386F69846C54DEB06CAE4979" },
+                "id-7": { idps: "00000001008300090400065B724141CB", psid: "001207E0B3E922C82A99FF7E8733FD7C" },
+                "id-8": { idps: "000000010085000B140E7DA4AA245E6E", psid: "00120730A04928295209A9F005958DD0" },
+                "id-9": { idps: "00000001008700061005E9EB31B61190", psid: "001207301CDA24E740D3C21E7789A782" },
+                "id-10": { idps: "00000001008500091022128786944AB0", psid: "0012000BDA37E7BC1FF976767D7CC984" }
+            };
+
+            if (selectedID && ids[selectedID]) {
+                idpsInfo.value = ids[selectedID].idps;
+                psidInfo.value = ids[selectedID].psid;
+            } else {
+                idpsInfo.value = "IDPS information will be displayed here...";
+                psidInfo.value = "PSID information will be displayed here...";
+            }
+
+            showDownloadLink();
+        }
+
+        function showDownloadLink() {
+            var selector = document.getElementById("id-selector");
+            var selectedID = selector.value;
+            var container = document.getElementById("download-link-container");
+
+            if (selectedID) {
+                container.innerHTML = '<a href="../misc/downloads/ids/' + selectedID + '/psnpatch.cfg" download class="link-button">Download as psnpatch.cfg</a>';
+            } else {
+                container.innerHTML = '';
+            }
+        }
+    </script>
+</body>
+</html>

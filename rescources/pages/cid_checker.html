@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Console ID Checker</title>
+    <link rel="icon" href="../images/icon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('../images/background.jpg');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .input-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .input-container input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+        }
+        .button-container {
+            text-align: center;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin: 5px;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .copyright {
+            color: #fff;
+            text-align: center;
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Console ID Checker</h1>
+    <div class="input-container">
+        <input type="text" id="consoleID" placeholder="Enter Console ID" />
+    </div>
+    <div class="button-container">
+        <button class="button" onclick="checkConsoleID()">Check ID</button>
+    </div>
+    <div class="button-container">
+        <a href="../../index.html" class="button">Back to Home</a>
+    </div>
+    <div class="copyright">
+        <p>Developed by XMW-USER &copy; 2024</p>
+    </div>
+
+    <script>
+        function checkConsoleID() {
+            var consoleID = document.getElementById("consoleID").value;
+            if (consoleID.length !== 32) {
+                alert("Error. Console ID length is invalid.");
+            } else {
+                // Show info notice about beta status
+                alert("This application is in beta. It only searches Google to check if the ID is public or not.");
+                var searchURL = "https://www.google.com/search?q=" + encodeURIComponent(consoleID);
+                window.open(searchURL, "_blank");
+            }
+        }
+    </script>
+</body>
+</html>

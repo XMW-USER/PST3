@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PS3 Homebrew Downloads</title>
+    <link rel="icon" href="../images/icon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('../images/background.jpg');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1, h2 {
+            color: #fff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .tab-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            margin: 0 10px;
+        }
+        .tab-link:hover {
+            background-color: #0056b3;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+            display: none;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            color: #fff;
+            text-align: center;
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            font-size: 14px;
+        }
+        .back-home-container {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            margin-top: 20px;
+}
+    </style>
+</head>
+<body>
+    <h1>PS3 Homebrew Downloads</h1>
+
+    <!-- Category tabs -->
+    <div class="tabs">
+        <a href="#" class="tab-link" onclick="showCategory('file-managers')">File Managers</a>
+        <a href="#" class="tab-link" onclick="showCategory('miscellaneous')">Miscellaneous</a>
+    </div>
+
+    <!-- File Managers Category -->
+    <ul id="file-managers" class="category">
+        <li><a href="https://store.brewology.com/get/homebrew.php?id=24&fid=2200">Download Multiman</a></li>
+        <li><a href="../misc/downloads/homebrew/IRISMAN_4.91.pkg">Download IRISMAN v4.91</a></li>
+    </ul>
+
+    <!-- Miscellaneous Category -->
+    <ul id="miscellaneous" class="category">
+        <li><a href="../misc/downloads/homebrew/Artemis.pkg">ArtemisPS3 vr6.3.1</a></li>
+        <li><a href="../misc/downloads/homebrew/apollo-save-tool.pkg">Apollo Save Tool v2.0.0</a></li>
+        <li><a href="../misc/downloads/homebrew/webMAN_MOD_1.47.46_Installer.pkg">webMAN MOD v1.47.46e</a></li>
+        <li><a href="../misc/downloads/homebrew/pkgi.pkg">PKGi v1.2.4</a></li>
+        <li><a href="../misc/downloads/homebrew/XX0001-ENSTONEXX_00-00000000000CCAPI_v2.80_Rev12.pkg">Download CCAPI</a></li>
+    </ul>
+
+    <div class="back-home-container">
+        <a href="../../index.html" class="link-button">Back to Home</a>
+    </div>
+
+    <footer>
+        <p>Developed by XMW-USER &copy; 2024</p>
+    </footer>
+
+    <script>
+        function showCategory(category) {
+            var categories = document.getElementsByClassName("category");
+            for (var i = 0; i < categories.length; i++) {
+                categories[i].style.display = "none";
+            }
+            document.getElementById(category).style.display = "block";
+        }
+    </script>
+</body>
+</html>
