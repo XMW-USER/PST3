@@ -10,7 +10,6 @@ PST3 is a web landing page designed for various activities, specifically optimiz
 
 - **Compatibility:** Fully compatible with the PS3 browser.
 - **User-friendly Interface:** Designed to be easy to navigate on the PS3.
-- **Multiple Activities:** Supports a variety of web-based activities suitable for PS3 users.
 
 ## Getting Started
 
@@ -26,7 +25,6 @@ To use PST3 as your homepage on the PS3 browser:
 
 - **index.html:** The main landing page file.
 - **resources/:** Contains additional resources required by the landing page.
-- **LICENSE:** MIT license file for the project.
 
 ## Contributing
 
