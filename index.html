@@ -40,20 +40,6 @@
         .link-button:hover {
             background-color: #0056b3;
         }
-        #info-container {
-            margin-top: 20px;
-            text-align: left;
-            width: 60%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        #console-info {
-            color: #fff;
-            margin-bottom: 20px;
-        }
-        .message {
-            color: red;
-        }
         .notice {
             color: #fff;
             text-align: center;
@@ -77,73 +63,9 @@
         <a href="rescources/pages/ids.html" class="link-button">ID List</a>
         <a href="rescources/pages/cid_checker.html" class="link-button">CID Checker</a>
         <a href="https://www.ps3toolset.com/bgtoolset/" class="link-button">PS3 Toolset</a>
-        <div id="info-container">
-            <h2>Console Information:</h2>
-            <p id="cpu-temp">CPU Temperature: <span id="cpuTemp">Loading...</span> °C</p>
-            <p id="rsx-temp">RSX Temperature: <span id="rsxTemp">Loading...</span> °C</p>
-            <p id="target-type">Target Type: <span id="targetType">Loading...</span></p>
-            <p class="message" id="compatibility-message" style="display: none;">This feature is only supported on the PS3 web browser.</p>
-        </div>
-        <div id="ip-container">
-            <input type="text" id="ps3Ip" placeholder="Enter your PS3 IP address">
-            <button onclick="setPs3Ip()">Set and Refresh</button>
-        </div>
-        <p class="notice">No information is stored on the server. All data is stored locally on the console.</p>
     </div>
     <div class="copyright">
         <p>Developed by XMW-USER &copy; 2024</p>
     </div>
-
-    <script>
-        async function fetchSystemInfo() {
-            const ps3Ip = localStorage.getItem('ps3Ip');
-            if (!ps3Ip) {
-                document.getElementById('cpuTemp').textContent = 'N/A';
-                document.getElementById('rsxTemp').textContent = 'N/A';
-                document.getElementById('targetType').textContent = 'N/A';
-                return;
-            }
-
-            try {
-                const response = await fetch(`http://${ps3Ip}/cpursx.ps3`);
-                const text = await response.text();
-
-                const cpuTempMatch = text.match(/CPU Temperature: (\d+)°C/);
-                const rsxTempMatch = text.match(/RSX Temperature: (\d+)°C/);
-                const targetTypeMatch = text.match(/Target Type: (\w+)/);
-
-                const cpuTemp = cpuTempMatch ? cpuTempMatch[1] : 'N/A';
-                const rsxTemp = rsxTempMatch ? rsxTempMatch[1] : 'N/A';
-                const targetType = targetTypeMatch ? targetTypeMatch[1] : 'N/A';
-
-                document.getElementById('cpuTemp').textContent = cpuTemp;
-                document.getElementById('rsxTemp').textContent = rsxTemp;
-                document.getElementById('targetType').textContent = targetType;
-            } catch (error) {
-                alert("Failed to fetch data. Please check the PS3 IP address.");
-            }
-        }
-
-        function setPs3Ip() {
-            const ps3Ip = document.getElementById('ps3Ip').value;
-            if (ps3Ip) {
-                localStorage.setItem('ps3Ip', ps3Ip);
-                fetchSystemInfo();
-            }
-        }
-
-        function checkPS3Browser() {
-            if (navigator.userAgent.indexOf("PLAYSTATION 3") === -1) {
-                document.getElementById("cpu-temp").style.display = "none";
-                document.getElementById("rsx-temp").style.display = "none";
-                document.getElementById("target-type").style.display = "none";
-                document.getElementById("compatibility-message").style.display = "block";
-            } else {
-                fetchSystemInfo();
-            }
-        }
-
-        window.onload = checkPS3Browser;
-    </script>
 </body>
 </html>
