@@ -54,6 +54,12 @@
         .message {
             color: red;
         }
+        .notice {
+            color: #fff;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 10px;
+        }
         .copyright {
             color: #fff;
             text-align: center;
@@ -73,78 +79,71 @@
         <a href="https://www.ps3toolset.com/bgtoolset/" class="link-button">PS3 Toolset</a>
         <div id="info-container">
             <h2>Console Information:</h2>
-            <p id="console-info">Loading...</p>
-            <p class="message" id="compatibility-message" style="display: none;">This feature is only compatible with the PS3 browser.</p>
+            <p id="cpu-temp">CPU Temperature: <span id="cpuTemp">Loading...</span> °C</p>
+            <p id="rsx-temp">RSX Temperature: <span id="rsxTemp">Loading...</span> °C</p>
+            <p id="target-type">Target Type: <span id="targetType">Loading...</span></p>
+            <p class="message" id="compatibility-message" style="display: none;">This feature is only supported on the PS3 web browser.</p>
         </div>
+        <div id="ip-container">
+            <input type="text" id="ps3Ip" placeholder="Enter your PS3 IP address">
+            <button onclick="setPs3Ip()">Set and Refresh</button>
+        </div>
+        <p class="notice">No information is stored on the server. All data is stored locally on the console.</p>
     </div>
     <div class="copyright">
         <p>Developed by XMW-USER &copy; 2024</p>
     </div>
 
     <script>
-        function getLocalIP(callback) {
-            var pc = new RTCPeerConnection({iceServers:[]});
-            pc.createDataChannel('');
-            pc.createOffer(pc.setLocalDescription.bind(pc), function() {});
-            pc.onicecandidate = function(event) {
-                if (!event || !event.candidate) return;
-                var ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3})/;
-                var ipAddress = ipRegex.exec(event.candidate.candidate)[1];
-                callback(ipAddress);
-                pc.onicecandidate = null;
-                pc.close();
-            };
-        }
-
-        function getConsoleInfo() {
-            // Check if the user is using a PS3 browser
-            if (navigator.userAgent.indexOf("PLAYSTATION 3") === -1) {
-                document.getElementById("console-info").style.display = "none";
-                document.getElementById("compatibility-message").style.display = "block";
+        async function fetchSystemInfo() {
+            const ps3Ip = localStorage.getItem('ps3Ip');
+            if (!ps3Ip) {
+                document.getElementById('cpuTemp').textContent = 'N/A';
+                document.getElementById('rsxTemp').textContent = 'N/A';
+                document.getElementById('targetType').textContent = 'N/A';
                 return;
             }
 
-            getLocalIP(function(ip) {
-                // Make an AJAX request to WebMAN's API
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        if (xhr.status === 200) {
-                            try {
-                                // Parse the JSON response
-                                var response = JSON.parse(xhr.responseText);
-                                // Extract and display the console information
-                                var firmwareVersion = response.firmwareVersion || "N/A";
-                                var model = response.model || "N/A";
-                                var systemId = response.systemId || "N/A";
-                                var temperature = response.temperature || "N/A";
+            try {
+                const response = await fetch(`http://${ps3Ip}/cpursx.ps3`);
+                const text = await response.text();
 
-                                // Display the console information
-                                var infoText = "Firmware Version: " + firmwareVersion + "<br>" +
-                                               "Model: " + model + "<br>" +
-                                               "System ID: " + systemId + "<br>" +
-                                               "Temperature: " + temperature;
-                                document.getElementById("console-info").innerHTML = infoText;
-                            } catch (e) {
-                                document.getElementById("console-info").textContent = "Failed to parse console information.";
-                            }
-                        } else {
-                            document.getElementById("console-info").textContent = "Failed to retrieve console information: " + xhr.status;
-                        }
-                    }
-                };
+                const cpuTempMatch = text.match(/CPU Temperature: (\d+)/);
+                const rsxTempMatch = text.match(/RSX Temperature: (\d+)/);
+                const targetTypeMatch = text.match(/Target Type: (\w+)/);
 
-                xhr.onerror = function() {
-                    document.getElementById("console-info").textContent = "An error occurred during the request.";
-                };
+                const cpuTemp = cpuTempMatch ? cpuTempMatch[1] : 'N/A';
+                const rsxTemp = rsxTempMatch ? rsxTempMatch[1] : 'N/A';
+                const targetType = targetTypeMatch ? targetTypeMatch[1] : 'N/A';
 
-                xhr.open("GET", "http://" + ip + "/webman/info.json", true);
-                xhr.send();
-            });
+                document.getElementById('cpuTemp').textContent = cpuTemp;
+                document.getElementById('rsxTemp').textContent = rsxTemp;
+                document.getElementById('targetType').textContent = targetType;
+            } catch (error) {
+                alert("Failed to fetch data. Please check the PS3 IP address.");
+            }
         }
 
-        // Call the function to retrieve and display the console information
-        getConsoleInfo();
+        function setPs3Ip() {
+            const ps3Ip = document.getElementById('ps3Ip').value;
+            if (ps3Ip) {
+                localStorage.setItem('ps3Ip', ps3Ip);
+                fetchSystemInfo();
+            }
+        }
+
+        function checkPS3Browser() {
+            if (navigator.userAgent.indexOf("PLAYSTATION 3") === -1) {
+                document.getElementById("cpu-temp").style.display = "none";
+                document.getElementById("rsx-temp").style.display = "none";
+                document.getElementById("target-type").style.display = "none";
+                document.getElementById("compatibility-message").style.display = "block";
+            } else {
+                fetchSystemInfo();
+            }
+        }
+
+        window.onload = checkPS3Browser;
     </script>
 </body>
 </html>
