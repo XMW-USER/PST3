@@ -108,8 +108,8 @@
                 const response = await fetch(`http://${ps3Ip}/cpursx.ps3`);
                 const text = await response.text();
 
-                const cpuTempMatch = text.match(/CPU Temperature: (\d+)/);
-                const rsxTempMatch = text.match(/RSX Temperature: (\d+)/);
+                const cpuTempMatch = text.match(/CPU Temperature: (\d+)°C/);
+                const rsxTempMatch = text.match(/RSX Temperature: (\d+)°C/);
                 const targetTypeMatch = text.match(/Target Type: (\w+)/);
 
                 const cpuTemp = cpuTempMatch ? cpuTempMatch[1] : 'N/A';
