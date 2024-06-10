@@ -4,11 +4,11 @@
 
 #
 
-A Web Landing page For Misc Activities compatible with PS3 browser.
+# PST3: A Web Landing Page Compatible with the PS3 Browser
 
 ## Overview
 
-PST3 is a web landing page designed for various activities, specifically optimized for use with the PlayStation 3 web browser. It provides a range of functionalities and resources accessible from PS3, easing a experience on this platform.
+PST3 is a specialized web landing page meticulously tailored for seamless compatibility with the PlayStation 3 web browser. It offers an array of features and resources directly accessible from the PS3 platform, easing the user experience and simplifying things without the need for a PC.
 
 ## Features
 
