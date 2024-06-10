@@ -1,6 +1,10 @@
-# PST3
+<div align="center">
+    <img src="https://github.com/XMW-USER/PST3/assets/170467467/fdbaba5b-dbf4-4417-a2a9-0585abb607b8" width="250" height="250" />
+</div>
 
-Web Landing page For Misc Activities compatible with PS3 browser.
+#
+
+A Web Landing page For Misc Activities compatible with PS3 browser.
 
 ## Overview
 
