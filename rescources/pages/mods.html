@@ -75,12 +75,11 @@
 </head>
 <body>
     <h1>PS3 Mods Downloads</h1>
-    <hr>
 
     <!-- Dropdown for Categories -->
     <div class="dropdown">
         <select id="modCategory" onchange="showCategory(this.value)">
-            <option value="">Select a category</option>
+            <option value="">Select a game</option>
             <optgroup label="Call of Duty">
                 <option value="mw1-mods">MW1</option>
                 <option value="mw2-mods">MW2</option>
@@ -101,7 +100,6 @@
             <option value="miscellaneous">Miscellaneous</option>
         </select>
     </div>
-    <hr>
 
     <!-- MW1 Category -->
     <ul id="mw1-mods" class="category">
@@ -183,7 +181,7 @@
             categories.forEach(function(cat) {
                 cat.style.display = 'none';
             });
-
+            
             if (category) {
                 document.getElementById(category).style.display = 'block';
             }
