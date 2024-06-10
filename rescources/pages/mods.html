@@ -20,26 +20,17 @@
             margin-bottom: 20px;
             text-align: center;
         }
-        .tabs {
+        .dropdown {
             display: flex;
             justify-content: center;
             margin-bottom: 20px;
         }
-        .tab-link {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        select {
+            padding: 10px;
             font-size: 16px;
-            text-decoration: none;
-            transition: background-color 0.3s;
-            margin: 0 10px;
-        }
-        .tab-link:hover {
-            background-color: #0056b3;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
         }
         ul {
             list-style-type: none;
@@ -79,27 +70,36 @@
             justify-content: center;
             text-align: center;
             margin-top: 20px;
-}
+        }
     </style>
 </head>
 <body>
     <h1>PS3 Mods Downloads</h1>
     <hr>
 
-    <!-- Category tabs -->
-    <div class="tabs">
-        <a href="#" class="tab-link" onclick="showCategory('mw1-mods')">MW1</a>
-        <a href="#" class="tab-link" onclick="showCategory('mw2-mods')">MW2</a>
-        <a href="#" class="tab-link" onclick="showCategory('mw3-mods')">MW3</a>
-        <a href="#" class="tab-link" onclick="showCategory('waw-mods')">WAW</a>
-        <a href="#" class="tab-link" onclick="showCategory('bo1-mods')">BO1</a>
-        <a href="#" class="tab-link" onclick="showCategory('bo2-mods')">BO2</a>
-        <a href="#" class="tab-link" onclick="showCategory('bo3-mods')">BO3</a>
-        <a href="#" class="tab-link" onclick="showCategory('aw-mods')">AW</a>
-        <a href="#" class="tab-link" onclick="showCategory('ghosts-mods')">Ghosts</a>
-        <a href="#" class="tab-link" onclick="showCategory('gtaiv-mods')">GTA IV + EFLC</a>
-        <a href="#" class="tab-link" onclick="showCategory('gtav-mods')">GTA V</a>
-        <a href="#" class="tab-link" onclick="showCategory('miscellaneous')">Miscellaneous</a>
+    <!-- Dropdown for Categories -->
+    <div class="dropdown">
+        <select id="modCategory" onchange="showCategory(this.value)">
+            <option value="">Select a category</option>
+            <optgroup label="Call of Duty">
+                <option value="mw1-mods">MW1</option>
+                <option value="mw2-mods">MW2</option>
+                <option value="mw3-mods">MW3</option>
+                <option value="waw-mods">WAW</option>
+                <option value="bo1-mods">BO1</option>
+                <option value="bo2-mods">BO2</option>
+                <option value="bo3-mods">BO3</option>
+                <option value="aw-mods">AW</option>
+                <option value="ghosts-mods">Ghosts</option>
+            </optgroup>
+            <optgroup label="Rockstar">
+                <option value="gtaiv-mods">GTA IV + EFLC</option>
+                <option value="gtav-mods">GTA V</option>
+                <option value="rdr-mods">Red Dead Redemption</option>
+            </optgroup>
+            <optgroup label="Misc"></optgroup>
+            <option value="miscellaneous">Miscellaneous</option>
+        </select>
     </div>
     <hr>
 
@@ -111,7 +111,7 @@
     <ul id="mw2-mods" class="category">
         <li><a href="https://download1586.mediafire.com/nlsqv4v9xmzgV6i0LUJthE56zYjD4NJZou34VDNXnwpgh5s58KTvwNzx-DyxSaZPvh5ci1LKrcJf7yak7GMYstzMsTWRxvgONNzBgxynCG-4oTO4WAaxiid9iDX9jIqjQpwuAK4rb1yE7n3xVS5eKwwojEuLaBtHCxsC4GFwUCptzA/ropqzptb3gbhuq2/All+COD+-+Matrix+Mod+Menu.zip">All COD - Matrix Mod Menu</a></li>
         <li><a href="https://download1587.mediafire.com/lm8cpqn6zgegfUANXGkI9bPtfOIkCb7cjPGVt5SHjsmQDOankKOpBbw8qK7ascO4vhxEFTDij3sjoY9mxXYuDB2N2hPAkBGDT2j06lNtdS_-FFUuY7dclUpY0cNAP4AuK7B7LGo9wjCrkl2DpG4uYwUnl7-KvbqFpUtrQ3-cSO4VSA/ipfiquv42878v69/ZeroTwo+MW2.zip">MP - Matrix Mod Menu</a></li>
-        <li><a href="https://download856.mediafire.com/ttaswx3g7zfgp82IsUxv-ksdS2C3becz-s_P-PgXD0ehh6-mOpPjXmPS8fKnPDILXNsHbX-awUSPRQ8O5dMjCjuI-IukmI_VB-hWA9Tq7TbvPBFQJ33ZOsDsOWeTtBASYELOtTTbpS5UAJhMuGxUWy0j4MhSwjYSIIKHavtPK8ObfA/h4zduzlgqngt4c5/AEROSOUL94%5C%27s+v1.zip">Spec Ops & SP - AEROSOUL94's v1</a></li>
+        li><a href="https://download856.mediafire.com/ttaswx3g7zfgp82IsUxv-ksdS2C3becz-s_P-PgXD0ehh6-mOpPjXmPS8fKnPDILXNsHbX-awUSPRQ8O5dMjCjuI-IukmI_VB-hWA9Tq7TbvPBFQJ33ZOsDsOWeTtBASYELOtTTbpS5UAJhMuGxUWy0j4MhSwjYSIIKHavtPK8ObfA/h4zduzlgqngt4c5/AEROSOUL94%5C%27s+v1.zip">Spec Ops & SP - AEROSOUL94's v1</a></li>
     </ul>
         <!-- MW3 Category -->
         <ul id="mw3-mods" class="category">
@@ -158,10 +158,13 @@
                 <ul id="gtav-mods" class="category">
                     <li><a href="https://download1648.mediafire.com/2c69p9bp78agoB_WtO92m8Dr_7bZ2c4fHQhQYsDK1YsXjFMSNu_ceMm1JAbPWUPHh07lJy643xp0u50s0H1DDy0IfW1DqaDORLwRUskD5g2h-pVX2hnSsCOtPZAE_5ZtBHJrJgKJHRKdMUXMNQvBmrwzSJW3r31NshWSmqbA7HCixw/ox0nncgizk1lpwc/WeedModLoader+Clean.zip">WeedModLoader Clean</a></li>
                 </ul>
+                                <!-- rdr Category -->
+                <ul id="rdr-mods" class="category">
+                    <li><a href="https://download937.mediafire.com/p8vczkugsfsgaW9NAGjyeImF_EOMia5zaKCgFpy2u_Mlw2C_eV38OaUhee5yO7v5DIzxLGIdBJpZcJ4AukDNO0zTCc2a34Ll_Hzn3vI767FtJWiWe-GCb9aTsygFxBC1wSvsVG7vsUvyhcPraA8u1tkoqJ5BoX8PrAIAdxt6jrj18g/5gyvzffy35o2ss8/Demonic+Revelations+2.3+RDR+Menu+%5BHEN%26CFW%5D.zip">RDR - Demonic Revelations 2.3</a></li>
+                </ul>
     <!-- Miscellaneous Category -->
     <ul id="miscellaneous" class="category">
         <li><a href="https://download1588.mediafire.com/ga1kgifxqhpgE2k3YUPgnAGXUCqZM-vJFwdCG0UP504BNCLp4F7N67ATBauJmUHYV-Grlq99Tbdr887bRoPcQFX0eWLr1yPKq417KE-ofQoMoHqcn-wlgJpigXayi-yxKR5Zc5lekEPQvUEAqekr-OJ1KPPWyiW0Ndwi2MTlAkZGyA/rq3bwwbw02b4vif/Dead+Island+Dev+Menu+%5BOriginal-Riptide%5D+%5BHEN%26CFW%5D.zip">Dead Island Dev Menu [Original-Riptide]</a></li>
-        <li><a href="https://download937.mediafire.com/p8vczkugsfsgaW9NAGjyeImF_EOMia5zaKCgFpy2u_Mlw2C_eV38OaUhee5yO7v5DIzxLGIdBJpZcJ4AukDNO0zTCc2a34Ll_Hzn3vI767FtJWiWe-GCb9aTsygFxBC1wSvsVG7vsUvyhcPraA8u1tkoqJ5BoX8PrAIAdxt6jrj18g/5gyvzffy35o2ss8/Demonic+Revelations+2.3+RDR+Menu+%5BHEN%26CFW%5D.zip">RDR - Demonic Revelations 2.3</a></li>
         <li><a href="https://download1588.mediafire.com/862m8tgqd8vguPnnn9zP5gmyDGgwt5F7mx0xKIfwKe8T8z3sj50_Xk53SNab53k4XODzVNMN6dbGRWLRn1z_Erg2G23S0HaMBe_NvcaS2_lkgKYkvErcajmPrx_0_n9T7rk_XYj8s_w2YcVe6g1NZ4WUqxyqz2qDZ5QIxM3Y1vjFtQ/yzgv7vqh9irsq72/%5BDownCraft%5D+V4.5+Premium.zip">Minecraft - DownCraft V4.5 Premium</a></li>
         <li><a href="https://download1527.mediafire.com/3idbh7wljixga50KLSesBp5-NLLQ094dU3_YSxrgmVK8lT20nM2Z6TkyBA9cKv0cMbwDMmNOWlICfomzckT5nxvSq0l-AQFylAiYxxYq4ZBjmdX8A0CkSnkMfkLBx-tmsx-ELIor2olMyJw1WCSq2pzky4kaanj4IaL8bZOo_oA_PQ/eqzreeo4abjcsz5/UltimateCraftV2.zip">Minecraft - UltimateCraftV2</a></li>
         <li><a href="https://download1076.mediafire.com/5a1kbmdadlegEhP3Cbymxe2qZczvL9XLdjtJhbtVZz6LhrVAGtkGWTJ-9qPHjGkdZCvumMc8bS7ZdYdYYsuMHnXxrARqImbpzmV5wkm-M7jyhJ-gwfJfW8Ezdpcy7qSOhtl7J0nVDVJYnx14bh48XHshyUd0p7E6so2TCSfQZsWNvQ/4ail6zwjf0vfkwl/Bonkerlands+-+All+Regions.zip">Borderlands - Bonkerlands</a></li>
@@ -176,11 +179,14 @@
 
     <script>
         function showCategory(category) {
-            var categories = document.getElementsByClassName("category");
-            for (var i = 0; i < categories.length; i++) {
-                categories[i].style.display = "none";
+            var categories = document.querySelectorAll('.category');
+            categories.forEach(function(cat) {
+                cat.style.display = 'none';
+            });
+
+            if (category) {
+                document.getElementById(category).style.display = 'block';
             }
-            document.getElementById(category).style.display = "block";
         }
     </script>
 </body>
