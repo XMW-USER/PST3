@@ -6,7 +6,6 @@
     <title>PS3 Console Information</title>
     <link rel="icon" href="../images/icon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="../css/styles.css">
-
 </head>
 <body>
     <h1>PS3 Console Information</h1>
@@ -37,52 +36,46 @@
             <p id="psid">Click "Get Info" to retrieve data</p>
         </div>
     </div>
-    <div class="error-message" id="error-message">
-        <p>Error fetching data! Is webMAN MOD installed?</p>
+    <div class="error-message" id="error-message" style="display: none;">
+        <p>Error fetching data! Is webMAN MOD installed and running?</p>
         <div class="error-links">
             <a href="https://github.com/aldostools/webMAN-MOD/releases">Download webMAN MOD</a>
-            <br>
-            <br>
+            <br><br>
             <a href="https://github.com/aldostools/webMAN-MOD/wiki">webMAN MOD Wiki</a>
         </div>
     </div>
 
     <script>
-        async function fetchData(command, elementId) {
-            try {
-                const response = await fetch(`http://localhost/${command}?_=${Date.now()}`);
-                const data = await response.text();
-                document.getElementById(elementId).textContent = data;
-                return true;
-            } catch (error) {
-                return false;
-            }
+        function fetchData(command, elementId) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    document.getElementById(elementId).textContent = xhr.responseText;
+                }
+            };
+            xhr.open('GET', 'http://localhost/' + command + '?_=' + Date.now(), true);
+            xhr.send();
         }
 
-        async function sendNotification() {
-            try {
-                await fetch(`http://localhost/PS3 NOTIFY Info retrieved&icon=1&snd=1`);
-                await fetch(`http://localhost/PS3 BUZZER1`);
-            } catch (error) {
-                console.log('Error sending notification or buzzer command', error);
-            }
+        function sendNotification() {
+            var notifyXhr = new XMLHttpRequest();
+            notifyXhr.open('GET', 'http://localhost/PS3 NOTIFY Info retrieved&icon=1&snd=1', true);
+            notifyXhr.send();
+
+            var buzzerXhr = new XMLHttpRequest();
+            buzzerXhr.open('GET', 'http://localhost/PS3 BUZZER1', true);
+            buzzerXhr.send();
         }
 
-        async function getConsoleInfo() {
-            const successFwVersion = await fetchData('PS3 GETFWVERSION', 'fwVersion');
-            const successSysInfo = await fetchData('PS3 GETSYSINFO 0', 'sysInfo');
-            const successTargetType = await fetchData('PS3 GETFWTYPE', 'targetType');
-            const successTemps = await fetchData('PS3 GETTEMP', 'temps');
-            const successIdps = await fetchData('PS3 GETIDPS', 'idps');
-            const successPsid = await fetchData('PS3 GETPSID', 'psid');
+        function getConsoleInfo() {
+            fetchData('PS3 GETFWVERSION', 'fwVersion');
+            fetchData('PS3 GETSYSINFO 0', 'sysInfo');
+            fetchData('PS3 GETFWTYPE', 'targetType');
+            fetchData('PS3 GETTEMP', 'temps');
+            fetchData('PS3 GETIDPS', 'idps');
+            fetchData('PS3 GETPSID', 'psid');
 
-            if (successFwVersion && successSysInfo && successTargetType && successTemps && successIdps && successPsid) {
-                await sendNotification();
-            } else {
-                document.getElementById('info-container').style.display = 'none';
-                document.getElementById('error-message').style.display = 'block';
-                document.getElementById('getInfoButton').style.display = 'none';
-            }
+            sendNotification();
         }
     </script>
 
