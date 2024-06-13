@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PS3 Console Information</title>
+    <link rel="icon" href="../images/icon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('../images/background.jpg');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .info-box {
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            margin-bottom: 10px;
+            font-size: 20px;
+            text-decoration: underline;
+        }
+        p {
+            margin: 5px 0;
+        }
+        button, .link-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        button:hover, .link-button:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+            display: none;
+        }
+        .error-message p {
+            font-size: 24px; /* Adjust this value to make the text bigger */
+        }
+        .error-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .error-links a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 0 10px;
+            transition: background-color 0.3s;
+        }
+        .error-links a:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            color: #fff;
+            text-align: center;
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            font-size: 14px;
+        }
+        .back-home-container {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>PS3 Console Information</h1>
+    <button id="getInfoButton" onclick="getConsoleInfo()">Get Info</button>
+    <div id="info-container">
+        <div class="info-box">
+            <h2>Firmware Version</h2>
+            <p id="fwVersion">Click "Get Info" to retrieve data</p>
+        </div>
+        <div class="info-box">
+            <h2>System Info</h2>
+            <p id="sysInfo">Click "Get Info" to retrieve data</p>
+        </div>
+        <div class="info-box">
+            <h2>Target Type</h2>
+            <p id="targetType">Click "Get Info" to retrieve data</p>
+        </div>
+        <div class="info-box">
+            <h2>Temperatures</h2>
+            <p id="temps">Click "Get Info" to retrieve data</p>
+        </div>
+        <div class="info-box">
+            <h2>IDPS</h2>
+            <p id="idps">Click "Get Info" to retrieve data</p>
+        </div>
+        <div class="info-box">
+            <h2>PSID</h2>
+            <p id="psid">Click "Get Info" to retrieve data</p>
+        </div>
+    </div>
+    <div class="error-message" id="error-message">
+        <p>Error fetching data! Is webMAN MOD installed?</p>
+        <div class="error-links">
+            <a href="https://github.com/aldostools/webMAN-MOD/releases">Download webMAN MOD</a>
+            <a href="https://github.com/aldostools/webMAN-MOD/wiki">webMAN MOD Wiki</a>
+        </div>
+    </div>
+
+    <script>
+        async function fetchData(command, elementId) {
+            try {
+                const response = await fetch(`http://localhost/${command}`);
+                const data = await response.text();
+                document.getElementById(elementId).textContent = data;
+                return true;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        async function sendNotification() {
+            try {
+                await fetch(`http://localhost/PS3 NOTIFY Info retrieved&icon=1&snd=1`);
+                await fetch(`http://localhost/PS3 BUZZER1`);
+            } catch (error) {
+                console.log('Error sending notification or buzzer command', error);
+            }
+        }
+
+        async function getConsoleInfo() {
+            const successFwVersion = await fetchData('PS3 GETFWVERSION', 'fwVersion');
+            const successSysInfo = await fetchData('PS3 GETSYSINFO 0', 'sysInfo');
+            const successTargetType = await fetchData('PS3 GETFWTYPE', 'targetType');
+            const successTemps = await fetchData('PS3 GETTEMP', 'temps');
+            const successIdps = await fetchData('PS3 GETIDPS', 'idps');
+            const successPsid = await fetchData('PS3 GETPSID', 'psid');
+
+            if (successFwVersion && successSysInfo && successTargetType && successTemps && successIdps && successPsid) {
+                await sendNotification();
+            } else {
+                document.getElementById('info-container').style.display = 'none';
+                document.getElementById('error-message').style.display = 'block';
+                document.getElementById('getInfoButton').style.display = 'none';
+            }
+        }
+    </script>
+
+    <div class="back-home-container">
+        <a class="link-button" href="../../index.html">Back to Home</a>
+    </div>
+    <footer>
+        <p>Developed by XMW-USER &copy; 2024</p>
+    </footer>
+</body>
+</html>
