@@ -9,13 +9,76 @@ body {
 
 .container {
     text-align: center;
-    margin-top: 20%;
+    margin-top: 10%;
 }
 
 h1 {
-    color: #333;
-    font-size: 36px;
+    color: #fff;
     margin-bottom: 20px;
+    text-align: center;
+}
+.info-box {
+    margin: 20px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #1a1a1a;
+    color: #d81313;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h2 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    text-decoration: underline;
+}
+p {
+    margin: 5px 0;
+}
+button, .link-button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+button:hover, .link-button:hover {
+    background-color: #0056b3;
+}
+.error-message {
+    color: red;
+    text-align: center;
+    display: none;
+}
+.error-message p {
+    font-size: 24px; /* Adjust this value to make the text bigger */
+}
+.error-links {
+    text-align: center;
+    margin-top: 20px;
+}
+.error-links a {
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 0 10px;
+    transition: background-color 0.3s;
+}
+.error-links a:hover {
+    background-color: #0056b3;
+}
+
+#button-container {
+    text-align: center; /* Align content to the center if needed */
 }
 
 .link-button {
@@ -29,15 +92,122 @@ h1 {
     font-size: 16px;
     text-decoration: none;
     transition: background-color 0.3s;
+    margin: 5px;
 }
 
 .link-button:hover {
     background-color: #0056b3;
 }
-.element {
-    width: 100%;
-    max-width: 600px;
+body {
+    font-family: 'Roboto', sans-serif;
+    background-image: url('../images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    text-align: center; 
+}
+h1, h2 {
+    color: #fff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.dropdown {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top: 20px; 
+}
+select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+ul {
+    list-style-type: none;
+    padding: 0;
     margin: 0 auto;
+    text-align: center;
+    display: none;
+}
+li {
+    margin-bottom: 10px;
+}
+a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+a:hover {
+    background-color: #0056b3;
+}
+footer {
+    color: #fff;
+    text-align: center;
+    position: fixed;
+    bottom: 10px;
+    width: 100%;
+    font-size: 14px;
+}
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.tab-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    margin: 0 10px;
+}
+.tab-link:hover {
+    background-color: #0056b3;
+}
+.back-home-container {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-top: 20px;
+}
+.copyright {
+    color: #fff;
+    text-align: center;
+    position: fixed;
+    bottom: 10px;
+    width: 100%;
+    font-size: 14px;
+}
+.copyright a.plain-link {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Use the default text color */
+    background-color: transparent; /* Remove background color */
+    padding: 0; /* Remove padding */
+    cursor: auto; /* Remove pointer cursor */
+    border-radius: 0; /* Remove border radius */
+    transition: none; /* Remove transition effects */
+}
+/* Default styles for your element */
+.element {
+    width: 100%; /* Take full width by default */
+    max-width: 600px; /* Set a maximum width */
+    margin: 0 auto; /* Center align */
 }
 
 /* Media query for smaller screens */
@@ -52,4 +222,71 @@ h1 {
     .element {
         font-size: 14px; /* Adjust font size or other properties */
     }
+}
+#about-text {
+    width: 80%;
+    height: 200px;
+    margin: 0 auto;
+    resize: none;
+    background-color: #1a1a1a;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    text-align: left; /* Align text left within the box */
+}
+textarea {
+    width: 60%;
+    height: 40px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: none;
+    overflow: hidden;
+    background-color: #1a1a1a;
+    color: #fff;
+    margin-bottom: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.input-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+.input-container input[type="text"] {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+}
+.button-container {
+    text-align: center;
+}
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin: 5px;
+    text-decoration: none;
+}
+.button:hover {
+    background-color: #0056b3;
+}
+.notice {
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
 }
