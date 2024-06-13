@@ -6,81 +6,13 @@
     <title>PS3 Mods Downloads</title>
     <link rel="icon" href="../images/icon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="../css/styles.css">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-image: url('../images/background.jpg');
-            background-size: cover;
-            background-position: center;
-            margin: 0;
-            padding: 0;
-            text-align: center; 
-        }
-        h1, h2 {
-            color: #fff;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .dropdown {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-            margin-top: 20px; 
-        }
-        select {
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0 auto;
-            text-align: center;
-            display: none;
-        }
-        li {
-            margin-bottom: 10px;
-        }
-        a {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-        a:hover {
-            background-color: #0056b3;
-        }
-        footer {
-            color: #fff;
-            text-align: center;
-            position: fixed;
-            bottom: 10px;
-            width: 100%;
-            font-size: 14px;
-        }
-        .back-home-container {
-            display: flex;
-            justify-content: center;
-            text-align: center;
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
     <h1>PS3 Mods Downloads</h1>
 
     <!-- Dropdown for Categories -->
     <div class="dropdown">
-        <select id="modCategory" onchange="showCategory(this.value)">
+        <select id="custom-dropdown" onchange="showCategory(this.value)">
             <option value="">Select a game</option>
             <optgroup label="Call of Duty">
                 <option value="mw1-mods">MW1</option>
@@ -111,7 +43,7 @@
     <!-- MW2 Category -->
     <ul id="mw2-mods" class="category">
         <li><a href="https://download1586.mediafire.com/nlsqv4v9xmzgV6i0LUJthE56zYjD4NJZou34VDNXnwpgh5s58KTvwNzx-DyxSaZPvh5ci1LKrcJf7yak7GMYstzMsTWRxvgONNzBgxynCG-4oTO4WAaxiid9iDX9jIqjQpwuAK4rb1yE7n3xVS5eKwwojEuLaBtHCxsC4GFwUCptzA/ropqzptb3gbhuq2/All+COD+-+Matrix+Mod+Menu.zip">All COD - Matrix Mod Menu</a></li>
-        <li><a href="https://download1587.mediafire.com/lm8cpqn6zgegfUANXGkI9bPtfOIkCb7cjPGVt5SHjsmQDOankKOpBbw8qK7ascO4vhxEFTDij3sjoY9mxXYuDB2N2hPAkBGDT2j06lNtdS_-FFUuY7dclUpY0cNAP4AuK7B7LGo9wjCrkl2DpG4uYwUnl7-KvbqFpUtrQ3-cSO4VSA/ipfiquv42878v69/ZeroTwo+MW2.zip">MP - ZeroTwo</a></li>
+        <li><a href="https://download1587.mediafire.com/lm8cpqn6zgegfUANXGkI9bPtfOIkCb7cjPGVt5SHjsmQDOankKOpBbw8qK7ascO4vhxEFTDij3sjoY9mxXYuDB2N2hPAkBGDT2j06lNtdS_-FFUuY7dclUpY0cNAP4AuK7B7LGo9wjCrkl2DpG4uYwUnl7-KvbqFpUtrQ3-cSO4VSA/ipfiquv42878v69/ZeroTwo+MW2.zip">MP - Matrix Mod Menu</a></li>
         <li><a href="https://download856.mediafire.com/ttaswx3g7zfgp82IsUxv-ksdS2C3becz-s_P-PgXD0ehh6-mOpPjXmPS8fKnPDILXNsHbX-awUSPRQ8O5dMjCjuI-IukmI_VB-hWA9Tq7TbvPBFQJ33ZOsDsOWeTtBASYELOtTTbpS5UAJhMuGxUWy0j4MhSwjYSIIKHavtPK8ObfA/h4zduzlgqngt4c5/AEROSOUL94%5C%27s+v1.zip">Spec Ops & SP - AEROSOUL94's v1</a></li>
     </ul>
         <!-- MW3 Category -->
@@ -137,6 +69,7 @@
         </ul>
         <!-- BO3 Category -->
         <ul id="bo3-mods" class="category">
+            <li><a href="https://download1586.mediafire.com/nlsqv4v9xmzgV6i0LUJthE56zYjD4NJZou34VDNXnwpgh5s58KTvwNzx-DyxSaZPvh5ci1LKrcJf7yak7GMYstzMsTWRxvgONNzBgxynCG-4oTO4WAaxiid9iDX9jIqjQpwuAK4rb1yE7n3xVS5eKwwojEuLaBtHCxsC4GFwUCptzA/ropqzptb3gbhuq2/All+COD+-+Matrix+Mod+Menu.zip">All COD - Matrix Mod Menu</a></li>
             <li><a href="https://download1592.mediafire.com/z20quxry6tgg6xFeI_3BhXjlHLDTKDQ9QjbvY4Fml6ck8ztFJO-FVoPcfduqPb6OwV2t_H4YpugvcotUVxfi4HTM5EJlH6AHR5WcohHe_-z7Ff1SHpOrGdcQtLqf8lyIV9Miw3qi9u-QhtgO0O8zDhHeG9oXsjoSyU2rsQQRlgatLw/Elysium+V1.zip">MP - ELYSIUM V1</a></li>
             <li><a href="https://download1502.mediafire.com/p30jcrl3dzlgqWlSXUzt4CrSx21K9CmRh2yVYb3A58HEC5hjiV96LTzNGiufKtQGb6GV9J-8eLQdjS0gm5oHGXnlTqNNOyUhtyboPTNiBy-cPnqV1T6mTxYfDLs9lh-8mIXMYHwi16kvRRp35JaaC6wLXKXzmNIOEMNIn0C9H8MHqQ/SkyFall+v1.7.zip">ZM - SkyFall v1.7</a></li>
         </ul>
@@ -172,10 +105,9 @@
     <div class="back-home-container">
         <a href="../../index.html">Back to Home</a>
     </div>
-
-    <footer>
-        <p>Developed by XMW-USER &copy; 2024</p>
-    </footer>
+    <div class="copyright">
+        <p>Developed by <a href="https://github.com/xmw-user" class="plain-link">XMW-USER</a> &copy; 2024 | <a href="../../rescources/pages/about.html" class="plain-link">About</a></p>
+    </div>
 
     <script>
         function showCategory(category) {
