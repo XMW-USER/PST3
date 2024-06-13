@@ -46,48 +46,97 @@
     </div>
 
     <script>
-        function fetchData(command, elementId) {
-            return new Promise(function(resolve, reject) {
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        if (xhr.status === 200) {
-                            document.getElementById(elementId).textContent = xhr.responseText.trim();
-                            resolve(true);
-                        } else {
-                            reject(false);
-                        }
+        let ps3Ip = null; // Variable to store PS3 IP address
+
+        async function fetchPS3IP() {
+            try {
+                const subnet = '192.168.1'; // Example subnet of your local network
+                const timeout = 200; // Timeout in milliseconds for network requests
+                const maxIP = 255; // Max value for last octet in IP address
+
+                for (let i = 1; i <= maxIP; i++) {
+                    const ip = `${subnet}.${i}`;
+                    const response = await fetch(`http://${ip}/cpursx.ps3?get_fw_version`, {
+                        method: 'HEAD', // Use HEAD request for faster response
+                        mode: 'cors', // Enable CORS mode for cross-origin requests
+                        cache: 'no-cache', // Disable caching
+                        redirect: 'follow', // Follow redirects
+                        referrerPolicy: 'no-referrer', // No referrer header
+                    });
+
+                    if (response.ok) {
+                        // If the response is successful, assume this is the PS3's IP
+                        ps3Ip = ip;
+                        console.log(`Detected PS3 IP: ${ps3Ip}`);
+                        break; // Exit loop since we found the PS3
                     }
-                };
-                xhr.open('GET', 'http://localhost/' + command, true);
-                xhr.send();
-            });
+                }
+
+                if (!ps3Ip) {
+                    throw new Error('PS3 IP not detected in the subnet');
+                }
+            } catch (error) {
+                console.error('Error detecting PS3 IP:', error);
+                ps3Ip = null;
+            }
         }
 
-        function sendNotification() {
-            var notifyXhr = new XMLHttpRequest();
-            notifyXhr.open('GET', 'http://localhost/popup.ps3$Info+retrieved&icon=1&snd=1', true);
-            notifyXhr.send();
+        async function fetchData(command, elementId) {
+            try {
+                if (!ps3Ip) {
+                    throw new Error('PS3 IP address not detected');
+                }
 
-            var buzzerXhr = new XMLHttpRequest();
-            buzzerXhr.open('GET', 'http://localhost/popup.ps3$Beep+beep&snd=1', true);
-            buzzerXhr.send();
+                const response = await fetch(`http://${ps3Ip}/${command}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch ${command}`);
+                }
+                const data = await response.text();
+                document.getElementById(elementId).textContent = data.trim();
+                return true;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return false;
+            }
+        }
+
+        async function sendNotification(message, iconId, soundId) {
+            try {
+                if (!ps3Ip) {
+                    throw new Error('PS3 IP address not detected');
+                }
+
+                const response = await fetch(`http://${ps3Ip}/popup.ps3?msg=${encodeURIComponent(message)}&icon=${iconId}&snd=${soundId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to send notification');
+                }
+            } catch (error) {
+                console.error('Error sending notification:', error);
+            }
         }
 
         async function getConsoleInfo() {
             try {
-                var successFwVersion = await fetchData('cpursx.ps3?get_fw_version', 'fwVersion');
-                var successSysInfo = await fetchData('cpursx.ps3?get_sys_info', 'sysInfo');
-                var successTargetType = await fetchData('cpursx.ps3?get_target_type', 'targetType');
-                var successTemps = await fetchData('cpursx.ps3?get_temp', 'temps');
-                var successIdps = await fetchData('idps.ps3', 'idps');
-                var successPsid = await fetchData('psid.ps3', 'psid');
-
-                if (successFwVersion && successSysInfo && successTargetType && successTemps && successIdps && successPsid) {
-                    sendNotification();
-                } else {
-                    throw new Error('Failed to retrieve all data');
+                await fetchPS3IP(); // Fetch PS3 IP address
+                if (!ps3Ip) {
+                    throw new Error('PS3 IP address not detected');
                 }
+
+                const commands = [
+                    { cmd: 'cpursx.ps3?get_fw_version', id: 'fwVersion' },
+                    { cmd: 'cpursx.ps3?get_sys_info', id: 'sysInfo' },
+                    { cmd: 'cpursx.ps3?get_target_type', id: 'targetType' },
+                    { cmd: 'cpursx.ps3?get_temp', id: 'temps' },
+                    { cmd: 'idps.ps3', id: 'idps' },
+                    { cmd: 'psid.ps3', id: 'psid' }
+                ];
+
+                for (const { cmd, id } of commands) {
+                    const success = await fetchData(cmd, id);
+                    if (!success) throw new Error(`Failed to retrieve ${id}`);
+                }
+
+                sendNotification('Info retrieved', 1, 1);
             } catch (error) {
                 console.error('Error retrieving console info:', error);
                 document.getElementById('info-container').style.display = 'none';
@@ -95,6 +144,9 @@
                 document.getElementById('getInfoButton').style.display = 'none';
             }
         }
+
+        // Load PS3 IP on page load
+        window.onload = fetchPS3IP;
     </script>
 
     <div class="back-home-container">
