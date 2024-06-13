@@ -59,29 +59,29 @@
                         }
                     }
                 };
-                xhr.open('GET', 'http://localhost/' + command + '?_=' + Date.now(), true);
+                xhr.open('GET', 'http://localhost/' + command, true);
                 xhr.send();
             });
         }
 
         function sendNotification() {
             var notifyXhr = new XMLHttpRequest();
-            notifyXhr.open('GET', 'http://localhost/notify.ps3?msg=Info+retrieved&icon=1&snd=1', true);
+            notifyXhr.open('GET', 'http://localhost/popup.ps3?msg=Info+retrieved&icon=1&snd=1', true);
             notifyXhr.send();
 
             var buzzerXhr = new XMLHttpRequest();
-            buzzerXhr.open('GET', 'http://localhost/buzzer.ps3?type=1', true);
+            buzzerXhr.open('GET', 'http://localhost/popup.ps3?msg=Beep+beep&snd=1', true);
             buzzerXhr.send();
         }
 
         async function getConsoleInfo() {
             try {
-                var successFwVersion = await fetchData('get_fw_version.ps3', 'fwVersion');
-                var successSysInfo = await fetchData('get_sys_info.ps3', 'sysInfo');
-                var successTargetType = await fetchData('get_target_type.ps3', 'targetType');
-                var successTemps = await fetchData('get_temps.ps3', 'temps');
-                var successIdps = await fetchData('get_idps.ps3', 'idps');
-                var successPsid = await fetchData('get_psid.ps3', 'psid');
+                var successFwVersion = await fetchData('cpursx.ps3?get_fw_version', 'fwVersion');
+                var successSysInfo = await fetchData('cpursx.ps3?get_sys_info', 'sysInfo');
+                var successTargetType = await fetchData('cpursx.ps3?get_target_type', 'targetType');
+                var successTemps = await fetchData('cpursx.ps3?get_temp', 'temps');
+                var successIdps = await fetchData('idps.ps3', 'idps');
+                var successPsid = await fetchData('psid.ps3', 'psid');
 
                 if (successFwVersion && successSysInfo && successTargetType && successTemps && successIdps && successPsid) {
                     sendNotification();
@@ -89,6 +89,7 @@
                     throw new Error('Failed to retrieve all data');
                 }
             } catch (error) {
+                console.error('Error retrieving console info:', error);
                 document.getElementById('info-container').style.display = 'none';
                 document.getElementById('error-message').style.display = 'block';
                 document.getElementById('getInfoButton').style.display = 'none';
