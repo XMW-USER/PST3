@@ -34,3 +34,22 @@ h1 {
 .link-button:hover {
     background-color: #0056b3;
 }
+.element {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .element {
+        max-width: 100%; /* Take full width on smaller screens */
+    }
+}
+
+/* Media query for even smaller screens */
+@media (max-width: 480px) {
+    .element {
+        font-size: 14px; /* Adjust font size or other properties */
+    }
+}
