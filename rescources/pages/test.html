@@ -50,7 +50,7 @@
     <script>
         async function fetchData(command, elementId) {
             try {
-                const response = await fetch(`http://localhost/${command}`);
+                const response = await fetch(`http://localhost/${command}?_=${Date.now()}`);
                 const data = await response.text();
                 document.getElementById(elementId).textContent = data;
                 return true;
