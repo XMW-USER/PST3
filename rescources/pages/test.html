@@ -52,7 +52,7 @@
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
                         if (xhr.status === 200) {
-                            document.getElementById(elementId).textContent = xhr.responseText;
+                            document.getElementById(elementId).textContent = xhr.responseText.trim();
                             resolve(true);
                         } else {
                             reject(false);
@@ -66,11 +66,11 @@
 
         function sendNotification() {
             var notifyXhr = new XMLHttpRequest();
-            notifyXhr.open('GET', 'http://localhost/popup.ps3?msg=Info+retrieved&icon=1&snd=1', true);
+            notifyXhr.open('GET', 'http://localhost/popup.ps3$Info+retrieved&icon=1&snd=1', true);
             notifyXhr.send();
 
             var buzzerXhr = new XMLHttpRequest();
-            buzzerXhr.open('GET', 'http://localhost/popup.ps3?msg=Beep+beep&snd=1', true);
+            buzzerXhr.open('GET', 'http://localhost/popup.ps3$Beep+beep&snd=1', true);
             buzzerXhr.send();
         }
 
