@@ -6,74 +6,12 @@
     <title>ID List</title>
     <link rel="icon" href="../images/icon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="../css/styles.css">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-image: url('../images/background.jpg');
-            background-size: cover;
-            background-position: center;
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            color: #fff;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .container {
-            margin-top: 10%;
-            text-align: center;
-        }
-        .link-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            text-decoration: none;
-            transition: background-color 0.3s;
-            margin: 5px;
-        }
-        .link-button:hover {
-            background-color: #0056b3;
-        }
-        select {
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        textarea {
-            width: 60%;
-            height: 40px;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 16px;
-            resize: none;
-            overflow: hidden;
-            background-color: #f5f5f5;
-            margin-bottom: 10px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .copyright {
-            color: #fff;
-            text-align: center;
-            position: fixed;
-            bottom: 10px;
-            width: 100%;
-            font-size: 14px;
-        }
-    </style>
+
 </head>
 <body>
     <div class="container">
         <h1>ID List</h1>
-        <select id="id-selector" class="link-button" onchange="showIDInfo()">
+        <select id="id-selector" class="custom-dropdown" onchange="showIDInfo()">
             <option value="">Select ID</option>
             <option value="id-1">ID-1</option>
             <option value="id-2">ID-2</option>
@@ -87,17 +25,16 @@
             <option value="id-10">ID-10</option>
         </select>
         <br>
+        <br>
         <textarea id="idps-info" readonly placeholder="IDPS information will be displayed here..."></textarea>
         <textarea id="psid-info" readonly placeholder="PSID information will be displayed here..."></textarea>
         <br>
         <div id="download-link-container"></div>
         <br>
-        <a href="../misc/downloads/homebrew/psnpatch.pkg" download class="link-button">Download PSNPatch.pkg</a>
+        <a href="../misc/downloads/homebrew/psnpatch.pkg" download class="custom-dropdown">Download PSNPatch.pkg</a>
         <br>
-        <a href="../../index.html" class="link-button">Back to Home</a>
-    </div>
-    <div class="copyright">
-        <p>Developed by XMW-USER &copy; 2024</p>
+        <br>
+        <a href="../../index.html" class="custom-dropdown">Back to Home</a>
     </div>
 
     <script>
@@ -137,11 +74,14 @@
             var container = document.getElementById("download-link-container");
 
             if (selectedID) {
-                container.innerHTML = '<a href="../misc/downloads/ids/' + selectedID + '/psnpatch.cfg" download class="link-button">Download as psnpatch.cfg</a>';
+                container.innerHTML = '<a href="../misc/downloads/ids/' + selectedID + '/psnpatch.cfg" download class="custom-dropdown">Download as psnpatch.cfg</a>';
             } else {
                 container.innerHTML = '';
             }
         }
     </script>
+    <div class="copyright">
+        <p>Developed by <a href="https://github.com/xmw-user" class="plain-link">XMW-USER</a> &copy; 2024 | <a href="../../rescources/pages/about.html" class="plain-link">About</a></p>
+    </div>
 </body>
 </html>
