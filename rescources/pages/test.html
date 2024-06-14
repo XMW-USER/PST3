@@ -6,154 +6,151 @@
     <title>PS3 Console Information</title>
     <link rel="icon" href="../images/icon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #console-info { white-space: pre-wrap; margin-top: 20px; }
+        .section { margin-bottom: 20px; }
+        .button-container { margin-top: 10px; }
+        button { margin-right: 10px; }
+    </style>
 </head>
 <body>
-    <h1>PS3 Console Information</h1>
-    <button id="getInfoButton" onclick="getConsoleInfo()">Get Info</button>
-    <div id="info-container">
-        <div class="info-box">
-            <h2>Firmware Version</h2>
-            <p id="fwVersion">Click "Get Info" to retrieve data</p>
-        </div>
-        <div class="info-box">
-            <h2>System Info</h2>
-            <p id="sysInfo">Click "Get Info" to retrieve data</p>
-        </div>
-        <div class="info-box">
-            <h2>Target Type</h2>
-            <p id="targetType">Click "Get Info" to retrieve data</p>
-        </div>
-        <div class="info-box">
-            <h2>Temperatures</h2>
-            <p id="temps">Click "Get Info" to retrieve data</p>
-        </div>
-        <div class="info-box">
-            <h2>IDPS</h2>
-            <p id="idps">Click "Get Info" to retrieve data</p>
-        </div>
-        <div class="info-box">
-            <h2>PSID</h2>
-            <p id="psid">Click "Get Info" to retrieve data</p>
+    <h1>PS3MAPI Web Interface</h1>
+    
+    <div class="section">
+        <label for="ps3-ip">PS3 IP Address:</label>
+        <input type="text" id="ps3-ip" value="192.168.1.95"> <!-- Preset IP example -->
+    </div>
+
+    <div class="section">
+        <div class="button-container">
+            <button onclick="getConsoleInfo()">Get Console Info</button>
+            <button onclick="getProcessList()">Get Process List</button>
+            <button onclick="getMemoryInfo()">Get Memory Info</button>
+            <button onclick="getTemperature()">Get Temperature</button>
         </div>
     </div>
-    <div class="error-message" id="error-message" style="display: none;">
-        <p>Error fetching data! Is webMAN MOD installed and running?</p>
-        <div class="error-links">
-            <a href="https://github.com/aldostools/webMAN-MOD/releases">Download webMAN MOD</a>
-            <br><br>
-            <a href="https://github.com/aldostools/webMAN-MOD/wiki">webMAN MOD Wiki</a>
+
+    <div class="section">
+        <div class="button-container">
+            <button onclick="shutdownPS3()">Shutdown PS3</button>
+            <button onclick="restartPS3()">Restart PS3</button>
         </div>
     </div>
+
+    <div class="section">
+        <label for="idps">New IDPS (16 bytes in hex):</label>
+        <input type="text" id="idps" placeholder="Enter new IDPS">
+        <button onclick="setIDPS()">Set IDPS</button>
+    </div>
+
+    <div class="section">
+        <label for="psid">New PSID (16 bytes in hex):</label>
+        <input type="text" id="psid" placeholder="Enter new PSID">
+        <button onclick="setPSID()">Set PSID</button>
+    </div>
+    
+    <div id="console-info"></div>
 
     <script>
-        let ps3Ip = null; // Variable to store PS3 IP address
+        async function fetchFromPS3(endpoint) {
+            const ps3Ip = document.getElementById('ps3-ip').value;
+            const url = `http://${ps3Ip}:7887${endpoint}`;
 
-        async function fetchPS3IP() {
             try {
-                const subnet = '192.168.1'; // Example subnet of your local network
-                const timeout = 200; // Timeout in milliseconds for network requests
-                const maxIP = 255; // Max value for last octet in IP address
-
-                for (let i = 1; i <= maxIP; i++) {
-                    const ip = `${subnet}.${i}`;
-                    const response = await fetch(`http://${ip}/cpursx.ps3?get_fw_version`, {
-                        method: 'HEAD', // Use HEAD request for faster response
-                        mode: 'cors', // Enable CORS mode for cross-origin requests
-                        cache: 'no-cache', // Disable caching
-                        redirect: 'follow', // Follow redirects
-                        referrerPolicy: 'no-referrer', // No referrer header
-                    });
-
-                    if (response.ok) {
-                        // If the response is successful, assume this is the PS3's IP
-                        ps3Ip = ip;
-                        console.log(`Detected PS3 IP: ${ps3Ip}`);
-                        break; // Exit loop since we found the PS3
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
                     }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
                 }
 
-                if (!ps3Ip) {
-                    throw new Error('PS3 IP not detected in the subnet');
-                }
+                const data = await response.json();
+                document.getElementById('console-info').innerText = JSON.stringify(data, null, 2);
             } catch (error) {
-                console.error('Error detecting PS3 IP:', error);
-                ps3Ip = null;
+                console.error('There was a problem with the fetch operation:', error);
+                document.getElementById('console-info').innerText = 'Error: ' + error.message;
             }
         }
 
-        async function fetchData(command, elementId) {
+        async function sendPostToPS3(endpoint, body) {
+            const ps3Ip = document.getElementById('ps3-ip').value;
+            const url = `http://${ps3Ip}:7887${endpoint}`;
+
             try {
-                if (!ps3Ip) {
-                    throw new Error('PS3 IP address not detected');
-                }
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
 
-                const response = await fetch(`http://${ps3Ip}/${command}`);
                 if (!response.ok) {
-                    throw new Error(`Failed to fetch ${command}`);
-                }
-                const data = await response.text();
-                document.getElementById(elementId).textContent = data.trim();
-                return true;
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                return false;
-            }
-        }
-
-        async function sendNotification(message, iconId, soundId) {
-            try {
-                if (!ps3Ip) {
-                    throw new Error('PS3 IP address not detected');
+                    throw new Error('Network response was not ok ' + response.statusText);
                 }
 
-                const response = await fetch(`http://${ps3Ip}/popup.ps3?msg=${encodeURIComponent(message)}&icon=${iconId}&snd=${soundId}`);
-                if (!response.ok) {
-                    throw new Error('Failed to send notification');
-                }
+                const data = await response.json();
+                document.getElementById('console-info').innerText = JSON.stringify(data, null, 2);
             } catch (error) {
-                console.error('Error sending notification:', error);
+                console.error('There was a problem with the fetch operation:', error);
+                document.getElementById('console-info').innerText = 'Error: ' + error.message;
             }
         }
 
         async function getConsoleInfo() {
-            try {
-                await fetchPS3IP(); // Fetch PS3 IP address
-                if (!ps3Ip) {
-                    throw new Error('PS3 IP address not detected');
-                }
+            await fetchFromPS3('/ps3mapi/info.ps3');
+        }
 
-                const commands = [
-                    { cmd: 'cpursx.ps3?get_fw_version', id: 'fwVersion' },
-                    { cmd: 'cpursx.ps3?get_sys_info', id: 'sysInfo' },
-                    { cmd: 'cpursx.ps3?get_target_type', id: 'targetType' },
-                    { cmd: 'cpursx.ps3?get_temp', id: 'temps' },
-                    { cmd: 'idps.ps3', id: 'idps' },
-                    { cmd: 'psid.ps3', id: 'psid' }
-                ];
+        async function getProcessList() {
+            await fetchFromPS3('/ps3mapi/process.ps3');
+        }
 
-                for (const { cmd, id } of commands) {
-                    const success = await fetchData(cmd, id);
-                    if (!success) throw new Error(`Failed to retrieve ${id}`);
-                }
+        async function getMemoryInfo() {
+            await fetchFromPS3('/ps3mapi/memory.ps3');
+        }
 
-                sendNotification('Info retrieved', 1, 1);
-            } catch (error) {
-                console.error('Error retrieving console info:', error);
-                document.getElementById('info-container').style.display = 'none';
-                document.getElementById('error-message').style.display = 'block';
-                document.getElementById('getInfoButton').style.display = 'none';
+        async function shutdownPS3() {
+            await fetchFromPS3('/ps3mapi/power/shutdown.ps3');
+        }
+
+        async function restartPS3() {
+            await fetchFromPS3('/ps3mapi/power/restart.ps3');
+        }
+
+        async function setIDPS() {
+            const idps = document.getElementById('idps').value;
+            if (idps && idps.length === 32) {
+                await sendPostToPS3('/ps3mapi/idps.ps3', { idps });
+            } else {
+                alert("Invalid IDPS. Please enter 16 bytes in hex.");
             }
         }
 
-        // Load PS3 IP on page load
-        window.onload = fetchPS3IP;
-    </script>
+        async function setPSID() {
+            const psid = document.getElementById('psid').value;
+            if (psid && psid.length === 32) {
+                await sendPostToPS3('/ps3mapi/psid.ps3', { psid });
+            } else {
+                alert("Invalid PSID. Please enter 16 bytes in hex.");
+            }
+        }
 
+        async function getTemperature() {
+            await fetchFromPS3('/ps3mapi/temperature.ps3');
+        }
+    </script>
+    
     <div class="back-home-container">
         <a class="link-button" href="../../index.html">Back to Home</a>
     </div>
     <div class="copyright">
         <p>Developed by <a href="https://github.com/xmw-user" class="plain-link">XMW-USER</a> &copy; 2024 | <a href="../../rescources/pages/about.html" class="plain-link">About</a></p>
     </div>
+    
 </body>
 </html>
