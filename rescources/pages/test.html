@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PS3 Console Information</title>
+    <link rel="icon" href="../images/icon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #console-info { white-space: pre-wrap; margin-top: 20px; }
+        .section { margin-bottom: 20px; }
+        .button-container { margin-top: 10px; }
+        button { margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <h1>PS3MAPI Web Interface</h1>
+    
+    <div class="section">
+        <label for="ps3-ip">PS3 IP Address:</label>
+        <input type="text" id="ps3-ip" value="192.168.1.95"> <!-- Preset IP example -->
+    </div>
+
+    <div class="section">
+        <div class="button-container">
+            <button onclick="getConsoleInfo()">Get Console Info</button>
+            <button onclick="getProcessList()">Get Process List</button>
+            <button onclick="getMemoryInfo()">Get Memory Info</button>
+            <button onclick="getTemperature()">Get Temperature</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="button-container">
+            <button onclick="shutdownPS3()">Shutdown PS3</button>
+            <button onclick="restartPS3()">Restart PS3</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <label for="idps">New IDPS (16 bytes in hex):</label>
+        <input type="text" id="idps" placeholder="Enter new IDPS">
+        <button onclick="setIDPS()">Set IDPS</button>
+    </div>
+
+    <div class="section">
+        <label for="psid">New PSID (16 bytes in hex):</label>
+        <input type="text" id="psid" placeholder="Enter new PSID">
+        <button onclick="setPSID()">Set PSID</button>
+    </div>
+    
+    <div id="console-info"></div>
+
+    <script>
+        async function fetchFromPS3(endpoint) {
+            const ps3Ip = document.getElementById('ps3-ip').value;
+            const url = `http://${ps3Ip}:7887${endpoint}`;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+
+                const data = await response.json();
+                document.getElementById('console-info').innerText = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+                document.getElementById('console-info').innerText = 'Error: ' + error.message;
+            }
+        }
+
+        async function sendPostToPS3(endpoint, body) {
+            const ps3Ip = document.getElementById('ps3-ip').value;
+            const url = `http://${ps3Ip}:7887${endpoint}`;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+
+                const data = await response.json();
+                document.getElementById('console-info').innerText = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+                document.getElementById('console-info').innerText = 'Error: ' + error.message;
+            }
+        }
+
+        async function getConsoleInfo() {
+            await fetchFromPS3('/ps3mapi/info.ps3');
+        }
+
+        async function getProcessList() {
+            await fetchFromPS3('/ps3mapi/process.ps3');
+        }
+
+        async function getMemoryInfo() {
+            await fetchFromPS3('/ps3mapi/memory.ps3');
+        }
+
+        async function shutdownPS3() {
+            await fetchFromPS3('/ps3mapi/power/shutdown.ps3');
+        }
+
+        async function restartPS3() {
+            await fetchFromPS3('/ps3mapi/power/restart.ps3');
+        }
+
+        async function setIDPS() {
+            const idps = document.getElementById('idps').value;
+            if (idps && idps.length === 32) {
+                await sendPostToPS3('/ps3mapi/idps.ps3', { idps });
+            } else {
+                alert("Invalid IDPS. Please enter 16 bytes in hex.");
+            }
+        }
+
+        async function setPSID() {
+            const psid = document.getElementById('psid').value;
+            if (psid && psid.length === 32) {
+                await sendPostToPS3('/ps3mapi/psid.ps3', { psid });
+            } else {
+                alert("Invalid PSID. Please enter 16 bytes in hex.");
+            }
+        }
+
+        async function getTemperature() {
+            await fetchFromPS3('/ps3mapi/temperature.ps3');
+        }
+    </script>
+    
+    <div class="back-home-container">
+        <a class="link-button" href="../../index.html">Back to Home</a>
+    </div>
+    <div class="copyright">
+        <p>Developed by <a href="https://github.com/xmw-user" class="plain-link">XMW-USER</a> &copy; 2024 | <a href="../../rescources/pages/about.html" class="plain-link">About</a></p>
+    </div>
+    
+</body>
+</html>
